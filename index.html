@@ -47,12 +47,226 @@
 </head>
 <body>
     
+    <h2 id="stateMatch">État du match</h2>
+    <div class="col">
+
+
+        <h4>Nom du scouter:</h4>
+        <input name="scouterName" type="text" id="scouterName" class="toExport">
+        <h4># du match</h4>
+        <input name="matchNb" type="number" id="matchNb" class="toExport">
+        <h4># de l'Équipe</h4>
+        <input name="teamNb" type="number" id="teamNb" class="toExport">
+        <p>Ballon départ</p>
+        <input name="nbBallonDepart" type="number" id="nbBallonDepart" class="toExport"><br>
+        <button id="debutMatch" onclick="debutMatch()">Début de match</button><br>
+
+        <div class="hiddenBeforeMatch">
+            <h4>Mode Autonome</h4>
+            <input name="autoTraverserLigne" type="checkbox" id="autoTraverserLigne" class="toExport">A traverser ligne?<br>
+            <p>Ballons Bottom Auto</p>
+            <button onclick="autoBallonBottom.value--">-</button><input name="autoBallonBottom" type="number" id="autoBallonBottom" value="0"><button onclick="autoBallonBottom.value++">+</button>
+            <p>Ballons Upper Auto</p>
+            <button onclick="autoBallonUpper.value--">-</button><input name="autoBallonUpper" type="number" id="autoBallonUpper" value="0"><button onclick="autoBallonUpper.value++">+</button>
+            <p>Ballons Manqués Auto</p>
+            <button onclick="autoBallonManque.value--">-</button><input name="autoBallonManque" type="number" id="autoBallonManque" value="0"><button onclick="autoBallonManque.value++">+</button><br>
+
+
+        </div>
+
+
+        <div class="col hiddenBeforeMatch">
+            <button id="tireBallon" onclick="tireDesBallon()">Tire</button><br>
+            <div id="tire" style="display: none;">
+                <p>Ballons Bottom</p>
+                <button onclick="BallonBottom.value--">-</button><input name="BallonBottom" type="number" id="BallonBottom" value="0"><button onclick="BallonBottom.value++">+</button>
+                <p>Ballons Upper</p>
+                <button onclick="BallonUpper.value--">-</button><input name="BallonUpper" type="number" id="BallonUpper" value="0"><button onclick="BallonUpper.value++">+</button>
+                <p>Ballons Manqués</p>
+                <button onclick="BallonManque.value--">-</button><input name="BallonManque" type="number" id="BallonManque" value="0"><button onclick="BallonManque.value++">+</button><br>
+                
+            </div>
+
+            <button id="defense" onclick="faitDefense()">Fait Défense</button><br>
+            <button id="grimpe" onclick="grimper()">Grimpe</button><br>
+            <p>Commentaire:</p><br>
+            <textarea name="commentaire" id="commentaire" class="toExport"></textarea>
+            <button id="finMatch" onclick="finMatch()">Fin de match</button>
+
+        </div>
+
+        <div class="col hiddenBeforeMatch">
+            <p>Peut ramasser des ballons</p>
+            <input name="ramasseParTerre" type="checkbox" id="ramasseParTerre" class="toExport">Par terre<br>
+            <input name="ramasseFeedingStation" type="checkbox" id="ramasseFeedingStation" class="toExport">Feeding Station<br>
+            <h4>Pins</h4>
+            <p>Nombre de pin reçu</p>
+            <button onclick="pinRecu.value--">-</button><input name="pinRecu" type="number" id="pinRecu" class="toExport" value="0"><button onclick="pinRecu.value++">+</button><br>
+            <input name="bougePin" type="checkbox" id="bougePin" class="toExport">Bouge pendant pin?<br>
+            <p>Nombre de pin initié</p>
+            <button onclick="pinInitie.value--">-</button><input name="pinInitie" type="number" id="pinInitie" class="toExport" value="0"><button onclick="pinInitie.value++">+</button>
+            <p>Nombre de pénalité causé par les pins</p>
+            <button onclick="penoPin.value--">-</button><input name="penoPin" type="number" id="penoPin" class="toExport" value="0"><button onclick="penoPin.value++">+</button>
+
+            
+        </div>
+
+    </div>
+
+
 </body>
 
 <script>
 
 
+var timers = [];
+var ballonsTires = [];
+var tempsDefense = [];
+var tempsGrimper = [];
 
+
+
+function exportAll(){
+    var thingsToExport = document.getElementsByClassName("toExport");
+
+    var outArray = {};
+
+    for (var i = 0; i < thingsToExport.length; i++) {
+        var element = thingsToExport[i];
+            //console.log(element.value);
+
+        if (element.type == "checkbox"){
+                outArray[element.name] = element.checked;
+        }else{
+            outArray[element.name] = element.value;
+        }
+    }
+    outArray["tempsGrimper"] = tempsGrimper;
+    outArray["ballonsTirer"] = ballonsTires;
+    outArray["TimeDefense"] = tempsDefense;
+    return outArray;
+}
+
+
+
+function setHiddenStyle(nomStyle){
+    var elements = document.getElementsByClassName("hiddenBeforeMatch");
+    for (let index = 0; index < elements.length; index++) {
+        elements[index].style.display = nomStyle;
+        
+    }
+}
+
+setHiddenStyle("none");
+
+function startTimer(name){
+        timers[name] = ((new Date()).getTime() / 1000);
+    }
+
+function getTimer(name){
+    return(((new Date()).getTime() / 1000) - timers[name]);
+}
+
+var inteverval = setInterval(setMatchState, 1000);
+
+function setMatchState(){
+    if (getTimer("match")) {
+        if (getTimer("match") >= 16) {
+            stateMatch.innerText = "Teleop"
+            if (getTimer("match") >= 121) {
+                stateMatch.innerText = "EndGame";
+                if (getTimer("match") >= 151) {
+                    stateMatch.innerText = "Match finished"
+                }
+            }
+        }
+    }
+}
+
+function tireDesBallon(){
+    if (tireBallon.innerText == "Tire") {
+        var timeMatch = getTimer("match");
+        
+        tire.style.display = "initial";
+        tireBallon.style.backgroundColor = "Red";
+        tireBallon.style.color = "White";
+
+        tireBallon.innerText = "Enregistrer";
+    }else {
+        var nbBallons = {};
+        nbBallons["bottom"] = BallonBottom.value;
+        nbBallons["upper"] = BallonUpper.value;
+        nbBallons["manque"] = BallonManque.value;
+
+        nbBallons["autoBottom"] = autoBallonBottom.value;
+        nbBallons["autoUpper"] = autoBallonUpper.value;
+        nbBallons["autoManque"] = autoBallonManque.value;
+
+        BallonBottom.value = 0;
+        BallonUpper.value = 0;
+        BallonManque.value = 0;
+
+        tire.style.display = "none";
+        tireBallon.style.backgroundColor = "buttonface";
+        tireBallon.style.color = "Black";
+
+        ballonsTires.push(nbBallons);
+
+        tireBallon.innerText = "Tire";
+    }
+}
+
+
+
+
+function faitDefense(){
+    if (defense.innerText == "Fait Défense") {
+        var timeMatch = getTimer("match");
+        startTimer("faitDefense");
+        defense.style.backgroundColor = "Red";
+        defense.style.color = "White";
+        defense.innerText = "Fini Défense";
+
+    }else {
+        var timeDefense = getTimer("faitDefense");
+        tempsDefense.push(timeDefense);
+        defense.style.backgroundColor = "buttonface";
+        defense.style.color = "Black";
+        defense.innerText = "Fait Défense";
+
+        
+    }
+}
+
+function grimper(){
+    if (grimpe.innerText == "Grimpe") {
+        var timeMatch = getTimer("match");
+        startTimer("grimpe");
+        grimpe.style.backgroundColor = "Red";
+        grimpe.style.color = "White";
+        grimpe.innerText = "Fini Grimper";
+
+    }else {
+        var timeGrimper = getTimer("grimpe");
+        tempsGrimper.push(timeGrimper);
+        grimpe.style.backgroundColor = "buttonface";
+        grimpe.style.color = "Black";
+        grimpe.innerText = "Grimpe";
+
+        
+    }
+}
+
+function debutMatch(){
+    startTimer("match");
+    setHiddenStyle("initial");
+    stateMatch.innerText = "Autonomous";
+}
+
+function finMatch(){
+    var blob = new Blob([JSON.stringify(exportAll())], {type: "text/plain;charset=utf-8"});
+    saveAs(blob, "m" + exportAll().matchNb + "t" + exportAll().teamNb);
+}
 
 </script>
 </html>
