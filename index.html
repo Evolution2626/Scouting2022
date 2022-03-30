@@ -48,6 +48,7 @@
 <body>
     
     <h2 id="stateMatch">État du match</h2>
+    <h3 id="matchTime" class="hiddenBeforeMatch">Match Time: </h3>
     <div class="col">
 
 
@@ -167,9 +168,10 @@ function getTimer(name){
     return(((new Date()).getTime() / 1000) - timers[name]);
 }
 
-var inteverval = setInterval(setMatchState, 1000);
+var interval = setInterval(setMatchState, 1000);
 
 function setMatchState(){
+    matchTime.innerText = "Remaining Match Time: " + Math.ceil(150-getTimer("match"));
     if (getTimer("match")) {
         if (getTimer("match") >= 16) {
             stateMatch.innerText = "Teleop"
