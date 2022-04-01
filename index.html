@@ -33,13 +33,31 @@
 
         button{
             height: 45px;
+            
+            border-radius: 5px;
+            background-color: var(--primary-color);
+            color: var(black);
+            border: var(--main-dark);
+            border-style: solid;
         }
 
         #debutMatch {
             height: 75px;
         }
+        :root {
+            --main-darklg: #414141;
+            --main-dark: #161d29;
+            --primary-color: #fff347;
+            --main-light: #FFFFFF;
+            }
 
-        
+
+        body{
+            text-align: center;
+            background-color: var(--main-darklg);
+            color: var(--main-light);
+        }
+                
 
 
     </style>
@@ -76,49 +94,52 @@
         </div>
 
 
-        <div class="col hiddenBeforeMatch">
-            <button id="tireBallon" onclick="tireDesBallon()">Tire</button><br>
-            <div id="tire" style="display: none;">
-                <p>Ballons Bottom</p>
-                <button onclick="BallonBottom.value--">-</button><input name="BallonBottom" type="number" id="BallonBottom" value="0"><button onclick="BallonBottom.value++">+</button>
-                <p>Ballons Upper</p>
-                <button onclick="BallonUpper.value--">-</button><input name="BallonUpper" type="number" id="BallonUpper" value="0"><button onclick="BallonUpper.value++">+</button>
-                <p>Ballons Manqués</p>
-                <button onclick="BallonManque.value--">-</button><input name="BallonManque" type="number" id="BallonManque" value="0"><button onclick="BallonManque.value++">+</button><br>
-                
-            </div>
+    </div>
 
-            <button id="defense" onclick="faitDefense()">Fait Défense</button><br>
-            <button id="grimpe" onclick="grimper()">Grimpe</button><br>
-            <p>Commentaire:</p><br>
-            <textarea name="commentaire" id="commentaire" class="toExport"></textarea>
-            <button id="finMatch" onclick="finMatch()">Fin de match</button>
+    <div class="col hiddenBeforeMatch">
+        <h4>Teleop</h4>
 
-        </div>
-
-        <div class="col hiddenBeforeMatch">
-            <p>Peut ramasser des ballons</p>
-            <input name="ramasseParTerre" type="checkbox" id="ramasseParTerre" class="toExport">Par terre<br>
-            <input name="ramasseFeedingStation" type="checkbox" id="ramasseFeedingStation" class="toExport">Feeding Station<br>
-            <p>Grimpe ou?</p>
-            <input name="grimpePas" type="checkbox" id="grimpePas" class="toExport">Ne grimpe pas<br>
-            <input name="grimpeUn" type="checkbox" id="grimpeUn" class="toExport">Grimpe un étage<br>
-            <input name="grimpeDeux" type="checkbox" id="grimpeDeux" class="toExport">Grimpe deux étages<br>
-            <input name="grimpeTrois" type="checkbox" id="grimpeTrois" class="toExport">Grimpe trois étages<br>
-            <input name="grimpeQuatre" type="checkbox" id="grimpeQuatre" class="toExport">NGrimpe quatres étages<br>
-            <h4>Pins</h4>
-            <p>Nombre de pin reçu</p>
-            <button onclick="pinRecu.value--">-</button><input name="pinRecu" type="number" id="pinRecu" class="toExport" value="0"><button onclick="pinRecu.value++">+</button><br>
-            <input name="bougePin" type="checkbox" id="bougePin" class="toExport">Bouge pendant pin?<br>
-            <p>Nombre de pin initié</p>
-            <button onclick="pinInitie.value--">-</button><input name="pinInitie" type="number" id="pinInitie" class="toExport" value="0"><button onclick="pinInitie.value++">+</button>
-            <p>Nombre de pénalité causé par les pins</p>
-            <button onclick="penoPin.value--">-</button><input name="penoPin" type="number" id="penoPin" class="toExport" value="0"><button onclick="penoPin.value++">+</button>
-
+        <button id="tireBallon" onclick="tireDesBallon()">Tire</button><br>
+        <div id="tire" style="display: none;">
+            <p>Ballons Bottom</p>
+            <button onclick="BallonBottom.value--">-</button><input name="BallonBottom" type="number" id="BallonBottom" value="0"><button onclick="BallonBottom.value++">+</button>
+            <p>Ballons Upper</p>
+            <button onclick="BallonUpper.value--">-</button><input name="BallonUpper" type="number" id="BallonUpper" value="0"><button onclick="BallonUpper.value++">+</button>
+            <p>Ballons Manqués</p>
+            <button onclick="BallonManque.value--">-</button><input name="BallonManque" type="number" id="BallonManque" value="0"><button onclick="BallonManque.value++">+</button><br>
             
         </div>
 
+        <button id="defense" onclick="faitDefense()">Fait Défense</button><br>
+        <button id="grimpe" onclick="grimper()">Grimpe</button><br>
+        <p>Commentaire:</p><br>
+        <textarea name="commentaire" id="commentaire" class="toExport"></textarea><br>
+        <button id="finMatch" onclick="finMatch()">Fin de match</button>
+
     </div>
+
+    <div class="col hiddenBeforeMatch">
+        <h4>Peut ramasser des ballons</h4>
+        <input name="ramasseParTerre" type="checkbox" id="ramasseParTerre" class="toExport">Par terre<br>
+        <input name="ramasseFeedingStation" type="checkbox" id="ramasseFeedingStation" class="toExport">Feeding Station<br>
+        <h4>Endgame</h4>
+        <input name="grimpePas" type="checkbox" id="grimpePas" class="toExport">Ne grimpe pas<br>
+        <input name="grimpeUn" type="checkbox" id="grimpeUn" class="toExport">Grimpe un étage<br>
+        <input name="grimpeDeux" type="checkbox" id="grimpeDeux" class="toExport">Grimpe deux étages<br>
+        <input name="grimpeTrois" type="checkbox" id="grimpeTrois" class="toExport">Grimpe trois étages<br>
+        <input name="grimpeQuatre" type="checkbox" id="grimpeQuatre" class="toExport">Grimpe quatres étages<br>
+        <h4>Pins</h4>
+        <p>Nombre de pin reçu</p>
+        <button onclick="pinRecu.value--">-</button><input name="pinRecu" type="number" id="pinRecu" class="toExport" value="0"><button onclick="pinRecu.value++">+</button><br>
+        <input name="bougePin" type="checkbox" id="bougePin" class="toExport">Bouge pendant pin?<br>
+        <p>Nombre de pin initié</p>
+        <button onclick="pinInitie.value--">-</button><input name="pinInitie" type="number" id="pinInitie" class="toExport" value="0"><button onclick="pinInitie.value++">+</button>
+        <p>Nombre de pénalité causé par les pins</p>
+        <button onclick="penoPin.value--">-</button><input name="penoPin" type="number" id="penoPin" class="toExport" value="0"><button onclick="penoPin.value++">+</button>
+
+        
+    </div>
+
 
 
 </body>
@@ -177,14 +198,16 @@ function getTimer(name){
 var interval = setInterval(setMatchState, 1000);
 
 function setMatchState(){
-    matchTime.innerText = "Remaining Match Time: " + Math.ceil(150-getTimer("match"));
+    
     if (getTimer("match")) {
+        matchTime.innerText = "Remaining Match Time: " + Math.ceil(150-getTimer("match"));
         if (getTimer("match") >= 16) {
             stateMatch.innerText = "Teleop"
             if (getTimer("match") >= 121) {
                 stateMatch.innerText = "EndGame";
                 if (getTimer("match") >= 151) {
                     stateMatch.innerText = "Match finished"
+                    matchTime.innerText = "Remaining Match Time: 0";
                 }
             }
         }
@@ -215,8 +238,8 @@ function tireDesBallon(){
         BallonManque.value = 0;
 
         tire.style.display = "none";
-        tireBallon.style.backgroundColor = "buttonface";
-        tireBallon.style.color = "Black";
+        tireBallon.style.backgroundColor = "#fff347";
+        tireBallon.style.color = "black";
 
         ballonsTires.push(nbBallons);
 
@@ -238,8 +261,8 @@ function faitDefense(){
     }else {
         var timeDefense = getTimer("faitDefense");
         tempsDefense.push(timeDefense);
-        defense.style.backgroundColor = "buttonface";
-        defense.style.color = "Black";
+        defense.style.backgroundColor = "#fff347";
+        defense.style.color = "black";
         defense.innerText = "Fait Défense";
 
         
@@ -257,8 +280,8 @@ function grimper(){
     }else {
         var timeGrimper = getTimer("grimpe");
         tempsGrimper.push(timeGrimper);
-        grimpe.style.backgroundColor = "buttonface";
-        grimpe.style.color = "Black";
+        grimpe.style.backgroundColor = "#fff347";
+        grimpe.style.color = "black";
         grimpe.innerText = "Grimpe";
 
         
